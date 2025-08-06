@@ -1,0 +1,146 @@
+name: .NET Framework 4.8 CI
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build-and-test:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET Framework
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+      with:
+        nuget-version: '6.x'
+        
+    - name: Restore NuGet packages
+      run: nuget restore AustralianTaxCalculator.sln
+      
+    - name: Build solution
+      run: msbuild AustralianTaxCalculator.sln /p:Configuration=Debug /p:Platform="Any CPU" /p:UseSharedCompilation=false
+      
+    - name: Build Standalone API
+      run: msbuild TaxCalculator.StandaloneApi/TaxCalculator.StandaloneApi.csproj /p:Configuration=Debug /p:Platform="Any CPU"
+      
+    - name: Build Test Client
+      run: msbuild ApiTestClient.csproj /p:Configuration=Debug /p:Platform="Any CPU"
+      
+    - name: Setup VSTest
+      uses: darenm/Setup-VSTest@v1.2
+      
+    - name: Run Unit Tests
+      run: vstest.console.exe TaxCalculator.Tests.Unit/bin/Debug/TaxCalculator.Tests.Unit.dll /logger:trx /resultsDirectory:TestResults
+      
+    - name: Upload Test Results
+      uses: actions/upload-artifact@v4
+      if: always()
+      with:
+        name: test-results
+        path: TestResults/*.trx
+        
+    - name: Test Standalone API (Smoke Test)
+      run: |
+        echo "Starting Standalone API server..."
+        Start-Process -FilePath "TaxCalculator.StandaloneApi/bin/Debug/TaxCalculator.StandaloneApi.exe" -PassThru
+        Start-Sleep -Seconds 5
+        echo "Testing API endpoints..."
+        
+        # Test health endpoint
+        $healthResponse = Invoke-RestMethod -Uri "http://localhost:8080/api/health" -Method Get
+        Write-Output "Health Check: $($healthResponse.status)"
+        
+        # Test tax calculation
+        $taxRequest = @{
+            taxableIncome = 75000
+            financialYear = "2024-25"
+        } | ConvertTo-Json
+        
+        $taxResponse = Invoke-RestMethod -Uri "http://localhost:8080/api/tax/calculate" -Method Post -Body $taxRequest -ContentType "application/json"
+        Write-Output "Tax Calculation - Net Tax: $($taxResponse.netTaxPayable)"
+        
+        # Test tax brackets
+        $bracketsResponse = Invoke-RestMethod -Uri "http://localhost:8080/api/tax/brackets/2024-25" -Method Get
+        Write-Output "Tax Brackets Count: $($bracketsResponse.Count)"
+        
+        echo "API smoke tests completed successfully!"
+      shell: powershell
+      
+    - name: Build Artifacts
+      uses: actions/upload-artifact@v4
+      with:
+        name: build-artifacts
+        path: |
+          TaxCalculator.StandaloneApi/bin/Debug/
+          bin/Debug/
+          TaxCalculator.Tests.Unit/bin/Debug/
+          
+  code-analysis:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup .NET Framework
+      uses: microsoft/setup-msbuild@v2
+      
+    - name: Setup NuGet
+      uses: nuget/setup-nuget@v2
+      
+    - name: Restore packages
+      run: nuget restore AustralianTaxCalculator.sln
+      
+    - name: Run Code Analysis
+      run: |
+        echo "Running static code analysis..."
+        msbuild AustralianTaxCalculator.sln /p:Configuration=Debug /p:RunAnalyzersDuringBuild=true /p:TreatWarningsAsErrors=false
+        echo "Code analysis completed."
+        
+    - name: Check for compilation warnings
+      run: |
+        echo "Checking for compilation issues..."
+        $buildLog = msbuild AustralianTaxCalculator.sln /p:Configuration=Debug /flp:logfile=build.log;verbosity=normal
+        if (Select-String -Path "build.log" -Pattern "warning" -Quiet) {
+          Write-Output "⚠️ Build warnings detected:"
+          Select-String -Path "build.log" -Pattern "warning"
+        } else {
+          Write-Output "✅ No build warnings detected"
+        }
+      shell: powershell
+      
+  security-scan:
+    runs-on: windows-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Run Security Scan
+      run: |
+        echo "Scanning for common security issues..."
+        
+        # Check for hardcoded connection strings
+        $connectionStrings = Get-ChildItem -Recurse -Include "*.cs","*.config" | Select-String -Pattern "Server=|Data Source=|Password=" | Where-Object { $_.Line -notmatch "//.*Server=" }
+        if ($connectionStrings) {
+          Write-Output "⚠️ Potential hardcoded connection strings found:"
+          $connectionStrings | ForEach-Object { Write-Output "$($_.Filename):$($_.LineNumber) - $($_.Line.Trim())" }
+        }
+        
+        # Check for API keys or secrets
+        $secrets = Get-ChildItem -Recurse -Include "*.cs","*.config" | Select-String -Pattern "apikey|secret|password|token" -CaseSensitive:$false | Where-Object { $_.Line -notmatch "//" }
+        if ($secrets) {
+          Write-Output "⚠️ Potential secrets or API keys found:"
+          $secrets | ForEach-Object { Write-Output "$($_.Filename):$($_.LineNumber) - $($_.Line.Trim())" }
+        }
+        
+        Write-Output "✅ Security scan completed"
+      shell: powershell
