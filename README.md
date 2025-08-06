@@ -2,7 +2,7 @@
 
 A comprehensive Australian tax calculation application built using legacy .NET Framework 4.8 technologies. This project serves as an example of enterprise-grade legacy .NET applications and migration patterns.
 
-## 🎯 Overview
+## Overview
 
 This application calculates Australian income tax, Medicare levy, and historical levies (such as the Budget Repair Levy) for financial years 2015-16 through 2024-25. It demonstrates:
 
@@ -12,7 +12,7 @@ This application calculates Australian income tax, Medicare levy, and historical
 - **Legacy .NET Framework 4.8 stack** with ADO.NET data access
 - **Self-hosted API server** for demonstration without IIS dependencies
 
-## 🏗️ Solution Architecture
+## Solution Architecture
 
 ```
 AustralianTaxCalculator/
@@ -27,7 +27,7 @@ AustralianTaxCalculator/
 └── ApiTestClient.cs            # Test client for API validation
 ```
 
-## 🚀 How to Run Locally
+## How to Run Locally
 
 ### Prerequisites
 
@@ -87,7 +87,7 @@ The application works with in-memory data by default. To use SQL Server:
    sqlcmd -S "(localdb)\MSSQLLocalDB" -d AustralianTaxDB -i Database\SeedData.sql
    ```
 
-## 🔧 Technology Stack
+## Technology Stack
 
 ### Core Framework
 - **.NET Framework 4.8** - Legacy enterprise framework
@@ -139,7 +139,7 @@ The application works with in-memory data by default. To use SQL Server:
 <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
 ```
 
-## 📡 API Endpoints
+## API Endpoints
 
 ### Health Check
 ```http
@@ -174,7 +174,7 @@ Example: `GET /api/tax/brackets/2024-25`
 
 Returns progressive tax brackets for the specified financial year.
 
-## 🧮 Tax Calculation Features
+## Tax Calculation Features
 
 ### Supported Financial Years
 - **2015-16** to **2024-25** (10 years of historical data)
@@ -198,7 +198,7 @@ Returns progressive tax brackets for the specified financial year.
 - Effective Rate: 35.77%
 - Includes Budget Repair Levy: $4,000
 
-## 🧪 Testing
+## Testing
 
 Run unit tests with 100% coverage:
 
@@ -210,7 +210,7 @@ msbuild TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj
 nunit3-console TaxCalculator.Tests.Unit\bin\Debug\TaxCalculator.Tests.Unit.dll
 ```
 
-## 🏢 Enterprise Patterns Demonstrated
+## Enterprise Patterns Demonstrated
 
 - **Repository Pattern** - Data access abstraction
 - **Dependency Injection** - Loose coupling with Autofac
@@ -220,7 +220,7 @@ nunit3-console TaxCalculator.Tests.Unit\bin\Debug\TaxCalculator.Tests.Unit.dll
 - **Error Handling** - Structured exception management
 - **Logging** - Console and structured logging patterns
 
-## 🔄 Migration Considerations
+## Migration Considerations
 
 This project demonstrates common patterns found in legacy .NET Framework applications that may need migration to .NET Core/.NET 5+:
 
@@ -230,10 +230,10 @@ This project demonstrates common patterns found in legacy .NET Framework applica
 - **System.Web** → **Microsoft.AspNetCore**
 - **App.config** → **appsettings.json**
 
-## 📄 License
+## License
 
 This project is provided as an educational example for legacy .NET Framework development patterns.
 
-## 🤝 Contributing
+## Contributing
 
 This is a demonstration project. For real-world tax calculations, please consult the Australian Taxation Office (ATO) for current rates and regulations.
