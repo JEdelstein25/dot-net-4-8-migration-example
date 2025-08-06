@@ -27,7 +27,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
@@ -40,17 +40,17 @@ namespace TaxCalculator.Data.Repositories
                         {
                             incomes.Add(new UserMonthlyIncome
                             {
-                                Id = reader.GetInt64("Id"),
-                                UserId = reader.GetGuid("UserId"),
-                                FinancialYear = reader.GetString("FinancialYear"),
-                                Month = reader.GetInt32("Month"),
-                                GrossIncome = reader.GetDecimal("GrossIncome"),
-                                TaxableIncome = reader.GetDecimal("TaxableIncome"),
-                                DeductionsAmount = reader.GetDecimal("DeductionsAmount"),
-                                SuperContributions = reader.GetDecimal("SuperContributions"),
-                                IncomeType = reader.GetString("IncomeType"),
-                                PayPeriod = reader.GetString("PayPeriod"),
-                                RecordedDate = reader.GetDateTime("RecordedDate")
+                                Id = reader.GetInt64(0),
+                                UserId = reader.GetGuid(1),
+                                FinancialYear = reader.GetString(2),
+                                Month = reader.GetInt32(3),
+                                GrossIncome = reader.GetDecimal(4),
+                                TaxableIncome = reader.GetDecimal(5),
+                                DeductionsAmount = reader.GetDecimal(6),
+                                SuperContributions = reader.GetDecimal(7),
+                                IncomeType = reader.GetString(8),
+                                PayPeriod = reader.GetString(9),
+                                RecordedDate = reader.GetDateTime(10)
                             });
                         }
                     }
@@ -71,7 +71,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", income.UserId);
@@ -101,7 +101,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", income.UserId);
@@ -130,7 +130,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
@@ -142,21 +142,21 @@ namespace TaxCalculator.Data.Repositories
                         {
                             return new UserAnnualTaxSummary
                             {
-                                Id = reader.GetInt64("Id"),
-                                UserId = reader.GetGuid("UserId"),
-                                FinancialYear = reader.GetString("FinancialYear"),
-                                TotalGrossIncome = reader.GetDecimal("TotalGrossIncome"),
-                                TotalDeductions = reader.GetDecimal("TotalDeductions"),
-                                TotalTaxableIncome = reader.GetDecimal("TotalTaxableIncome"),
-                                IncomeTaxPayable = reader.GetDecimal("IncomeTaxPayable"),
-                                MedicareLevyPayable = reader.GetDecimal("MedicareLevyPayable"),
-                                OtherLeviesPayable = reader.GetDecimal("OtherLeviesPayable"),
-                                TotalTaxOffsets = reader.GetDecimal("TotalTaxOffsets"),
-                                NetTaxPayable = reader.GetDecimal("NetTaxPayable"),
-                                EffectiveTaxRate = reader.GetDecimal("EffectiveTaxRate"),
-                                MarginalTaxRate = reader.GetDecimal("MarginalTaxRate"),
-                                CalculationDate = reader.GetDateTime("CalculationDate"),
-                                LastModifiedDate = reader.GetDateTime("LastModifiedDate")
+                                Id = reader.GetInt64(0),
+                                UserId = reader.GetGuid(1),
+                                FinancialYear = reader.GetString(2),
+                                TotalGrossIncome = reader.GetDecimal(3),
+                                TotalDeductions = reader.GetDecimal(4),
+                                TotalTaxableIncome = reader.GetDecimal(5),
+                                IncomeTaxPayable = reader.GetDecimal(6),
+                                MedicareLevyPayable = reader.GetDecimal(7),
+                                OtherLeviesPayable = reader.GetDecimal(8),
+                                TotalTaxOffsets = reader.GetDecimal(9),
+                                NetTaxPayable = reader.GetDecimal(10),
+                                EffectiveTaxRate = reader.GetDecimal(11),
+                                MarginalTaxRate = reader.GetDecimal(12),
+                                CalculationDate = reader.GetDateTime(13),
+                                LastModifiedDate = reader.GetDateTime(14)
                             };
                         }
                     }
@@ -191,7 +191,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", summary.UserId);
@@ -226,7 +226,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
@@ -239,21 +239,21 @@ namespace TaxCalculator.Data.Repositories
                         {
                             summaries.Add(new UserAnnualTaxSummary
                             {
-                                Id = reader.GetInt64("Id"),
-                                UserId = reader.GetGuid("UserId"),
-                                FinancialYear = reader.GetString("FinancialYear"),
-                                TotalGrossIncome = reader.GetDecimal("TotalGrossIncome"),
-                                TotalDeductions = reader.GetDecimal("TotalDeductions"),
-                                TotalTaxableIncome = reader.GetDecimal("TotalTaxableIncome"),
-                                IncomeTaxPayable = reader.GetDecimal("IncomeTaxPayable"),
-                                MedicareLevyPayable = reader.GetDecimal("MedicareLevyPayable"),
-                                OtherLeviesPayable = reader.GetDecimal("OtherLeviesPayable"),
-                                TotalTaxOffsets = reader.GetDecimal("TotalTaxOffsets"),
-                                NetTaxPayable = reader.GetDecimal("NetTaxPayable"),
-                                EffectiveTaxRate = reader.GetDecimal("EffectiveTaxRate"),
-                                MarginalTaxRate = reader.GetDecimal("MarginalTaxRate"),
-                                CalculationDate = reader.GetDateTime("CalculationDate"),
-                                LastModifiedDate = reader.GetDateTime("LastModifiedDate")
+                                Id = reader.GetInt64(0),
+                                UserId = reader.GetGuid(1),
+                                FinancialYear = reader.GetString(2),
+                                TotalGrossIncome = reader.GetDecimal(3),
+                                TotalDeductions = reader.GetDecimal(4),
+                                TotalTaxableIncome = reader.GetDecimal(5),
+                                IncomeTaxPayable = reader.GetDecimal(6),
+                                MedicareLevyPayable = reader.GetDecimal(7),
+                                OtherLeviesPayable = reader.GetDecimal(8),
+                                TotalTaxOffsets = reader.GetDecimal(9),
+                                NetTaxPayable = reader.GetDecimal(10),
+                                EffectiveTaxRate = reader.GetDecimal(11),
+                                MarginalTaxRate = reader.GetDecimal(12),
+                                CalculationDate = reader.GetDateTime(13),
+                                LastModifiedDate = reader.GetDateTime(14)
                             });
                         }
                     }

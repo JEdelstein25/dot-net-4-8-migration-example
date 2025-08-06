@@ -26,7 +26,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", userId);
@@ -37,16 +37,16 @@ namespace TaxCalculator.Data.Repositories
                         {
                             return new User
                             {
-                                UserId = reader.GetGuid("UserId"),
-                                FirstName = reader.GetString("FirstName"),
-                                LastName = reader.GetString("LastName"),
-                                Email = reader.GetString("Email"),
-                                DateOfBirth = reader.IsDBNull("DateOfBirth") ? (DateTime?)null : reader.GetDateTime("DateOfBirth"),
-                                TFN = reader.IsDBNull("TFN") ? null : reader.GetString("TFN"),
-                                ResidencyStatus = reader.GetString("ResidencyStatus"),
-                                CreatedDate = reader.GetDateTime("CreatedDate"),
-                                LastModifiedDate = reader.GetDateTime("LastModifiedDate"),
-                                IsActive = reader.GetBoolean("IsActive")
+                                UserId = reader.GetGuid(0),
+                                FirstName = reader.GetString(1),
+                                LastName = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                DateOfBirth = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4),
+                                TFN = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                ResidencyStatus = reader.GetString(6),
+                                CreatedDate = reader.GetDateTime(7),
+                                LastModifiedDate = reader.GetDateTime(8),
+                                IsActive = reader.GetBoolean(9)
                             };
                         }
                     }
@@ -67,7 +67,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", user.UserId);
@@ -101,7 +101,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@UserId", user.UserId);
@@ -128,7 +128,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     command.Parameters.AddWithValue("@Email", email);
@@ -149,7 +149,7 @@ namespace TaxCalculator.Data.Repositories
 
             using (var connection = _connectionFactory.CreateConnection())
             {
-                await connection.OpenAsync();
+                connection.Open();
                 using (var command = new SqlCommand(sql, (SqlConnection)connection))
                 {
                     var users = new List<User>();
@@ -159,16 +159,16 @@ namespace TaxCalculator.Data.Repositories
                         {
                             users.Add(new User
                             {
-                                UserId = reader.GetGuid("UserId"),
-                                FirstName = reader.GetString("FirstName"),
-                                LastName = reader.GetString("LastName"),
-                                Email = reader.GetString("Email"),
-                                DateOfBirth = reader.IsDBNull("DateOfBirth") ? (DateTime?)null : reader.GetDateTime("DateOfBirth"),
-                                TFN = reader.IsDBNull("TFN") ? null : reader.GetString("TFN"),
-                                ResidencyStatus = reader.GetString("ResidencyStatus"),
-                                CreatedDate = reader.GetDateTime("CreatedDate"),
-                                LastModifiedDate = reader.GetDateTime("LastModifiedDate"),
-                                IsActive = reader.GetBoolean("IsActive")
+                                UserId = reader.GetGuid(0),
+                                FirstName = reader.GetString(1),
+                                LastName = reader.GetString(2),
+                                Email = reader.GetString(3),
+                                DateOfBirth = reader.IsDBNull(4) ? (DateTime?)null : reader.GetDateTime(4),
+                                TFN = reader.IsDBNull(5) ? null : reader.GetString(5),
+                                ResidencyStatus = reader.GetString(6),
+                                CreatedDate = reader.GetDateTime(7),
+                                LastModifiedDate = reader.GetDateTime(8),
+                                IsActive = reader.GetBoolean(9)
                             });
                         }
                     }

@@ -41,11 +41,15 @@ jobs:
     - name: Build Test Client
       run: msbuild ApiTestClient.csproj /p:Configuration=Debug /p:Platform=AnyCPU /v:minimal
       
-    - name: Build Services Library (may fail due to Data layer dependencies)
+    - name: Build Data Library
+      run: msbuild TaxCalculator.Data/TaxCalculator.Data.csproj /p:Configuration=Debug /p:Platform=AnyCPU /v:minimal
+      continue-on-error: true
+      
+    - name: Build Services Library
       run: msbuild TaxCalculator.Services/TaxCalculator.Services.csproj /p:Configuration=Debug /p:Platform=AnyCPU /v:minimal
       continue-on-error: true
       
-    - name: Build Unit Tests (may fail due to dependencies)
+    - name: Build Unit Tests (may fail due to NuGet packages)
       run: msbuild TaxCalculator.Tests.Unit/TaxCalculator.Tests.Unit.csproj /p:Configuration=Debug /p:Platform=AnyCPU /v:minimal
       continue-on-error: true
       
@@ -53,6 +57,7 @@ jobs:
       run: |
         Write-Host "=== Build Results ==="
         if (Test-Path "TaxCalculator.Core/bin/Debug/TaxCalculator.Core.dll") { Write-Host "✅ Core Library built successfully" } else { Write-Host "❌ Core Library build failed" }
+        if (Test-Path "TaxCalculator.Data/bin/Debug/TaxCalculator.Data.dll") { Write-Host "✅ Data Library built successfully" } else { Write-Host "❌ Data Library build failed" }
         if (Test-Path "TaxCalculator.Services/bin/Debug/TaxCalculator.Services.dll") { Write-Host "✅ Services Library built successfully" } else { Write-Host "❌ Services Library build failed" }
         if (Test-Path "TaxCalculator.StandaloneApi/bin/Debug/TaxCalculator.StandaloneApi.exe") { Write-Host "✅ Standalone API built successfully" } else { Write-Host "❌ Standalone API build failed" }
         if (Test-Path "bin/Debug/ApiTestClient.exe") { Write-Host "✅ Test Client built successfully" } else { Write-Host "❌ Test Client build failed" }
