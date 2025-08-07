@@ -18,6 +18,8 @@ jobs:
         with:
           fetch-depth: 0  # ensure branch history
       - name: Make changes
+        env:
+          AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
         run: npx @sourcegraph/amp@latest -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using pnpm install upgrade-assistant and then run upgrade-assistant upgrade"
       - name: Commit and push if changed
         run: |
