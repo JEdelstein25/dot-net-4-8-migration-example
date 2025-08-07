@@ -1,6 +1,5 @@
 using System.Configuration;
 using System.Reflection;
-using System.Web.Http;
 using Autofac;
 using Autofac.Integration.WebApi;
 using TaxCalculator.Data.Interfaces;

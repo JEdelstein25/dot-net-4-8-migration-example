@@ -12,19 +12,19 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04. Testing", "04. Testing"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05. Database", "05. Database", "{E1F2G3H4-I5J6-7890-EFGH-123456789012}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Api", "TaxCalculator.Api\TaxCalculator.Api.csproj", "{F1A2B3C4-D5E6-7890-ABCD-111111111111}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Api", "TaxCalculator.Api\TaxCalculator.Api.csproj", "{F1A2B3C4-D5E6-7890-ABCD-111111111111}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Core", "TaxCalculator.Core\TaxCalculator.Core.csproj", "{F2A2B3C4-D5E6-7890-ABCD-222222222222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Core", "TaxCalculator.Core\TaxCalculator.Core.csproj", "{F2A2B3C4-D5E6-7890-ABCD-222222222222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Services", "TaxCalculator.Services\TaxCalculator.Services.csproj", "{F3A2B3C4-D5E6-7890-ABCD-333333333333}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Services", "TaxCalculator.Services\TaxCalculator.Services.csproj", "{F3A2B3C4-D5E6-7890-ABCD-333333333333}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Data", "TaxCalculator.Data\TaxCalculator.Data.csproj", "{F4A2B3C4-D5E6-7890-ABCD-444444444444}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Data", "TaxCalculator.Data\TaxCalculator.Data.csproj", "{F4A2B3C4-D5E6-7890-ABCD-444444444444}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Infrastructure", "TaxCalculator.Infrastructure\TaxCalculator.Infrastructure.csproj", "{F5A2B3C4-D5E6-7890-ABCD-555555555555}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Infrastructure", "TaxCalculator.Infrastructure\TaxCalculator.Infrastructure.csproj", "{F5A2B3C4-D5E6-7890-ABCD-555555555555}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Tests.Unit", "TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj", "{F6A2B3C4-D5E6-7890-ABCD-666666666666}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Tests.Unit", "TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj", "{F6A2B3C4-D5E6-7890-ABCD-666666666666}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TaxCalculator.Console", "TaxCalculator.Console\TaxCalculator.Console.csproj", "{F7A2B3C4-D5E6-7890-ABCD-777777777777}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TaxCalculator.Console", "TaxCalculator.Console\TaxCalculator.Console.csproj", "{F7A2B3C4-D5E6-7890-ABCD-777777777777}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

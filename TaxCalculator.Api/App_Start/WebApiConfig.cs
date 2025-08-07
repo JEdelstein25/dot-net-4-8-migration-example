@@ -1,4 +1,3 @@
-using System.Web.Http;
 
 namespace TaxCalculator.Api
 {
