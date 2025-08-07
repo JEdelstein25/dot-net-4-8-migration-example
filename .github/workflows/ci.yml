@@ -2,7 +2,7 @@ name: .NET 8 CI
 
 on:
   push:
-    branches: [ main, develop ]
+    branches: [ main, develop, amp/upgrade-assistant-1754606408 ]
   pull_request:
     branches: [ main ]
 
