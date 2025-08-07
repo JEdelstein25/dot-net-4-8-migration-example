@@ -20,15 +20,17 @@ jobs:
       - name: Make changes
         env:
           AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
-        run: npx @sourcegraph/amp@latest -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using pnpm install upgrade-assistant and then run upgrade-assistant upgrade"
+        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using pnpm install upgrade-assistant and then run upgrade-assistant upgrade"
       - name: Commit and push if changed
+        shell: pwsh
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet; then
+          git diff --quiet
+          if ($LASTEXITCODE -ne 0) {
             git add -A
             git commit -m "Apply automated updates [skip ci]"
             git push
-          else
-            echo "No changes."
-          fi
+          } else {
+            Write-Host "No changes."
+          }
