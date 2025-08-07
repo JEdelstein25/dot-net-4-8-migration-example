@@ -1,0 +1,32 @@
+name: .NET Framework Upgrade
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+
+permissions:
+  contents: write  # required for GITHUB_TOKEN to push
+
+jobs:
+  update:
+    runs-on: windows-2022
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # ensure branch history
+      - name: Make changes
+        run: npx @sourcegraph/amp@latest -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using pnpm install upgrade-assistant and then run upgrade-assistant upgrade"
+      - name: Commit and push if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet; then
+            git add -A
+            git commit -m "Apply automated updates [skip ci]"
+            git push
+          else
+            echo "No changes."
+          fi
