@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "dependencies": {
+    "net8.0": {
+      "Castle.Core": {
+        "type": "Direct",
+        "requested": "[4.4.0, )",
+        "resolved": "4.4.0",
+        "contentHash": "HvprzkLfK6uLSCz6W8JC1jT3jtSbYlZ8T8UClJJZP9Xa4DVvvFjhj4uX+PJp8kKJDJZwR+8bnT9v/VIaKSG0w=="
+      },
+      "Microsoft.Data.SqlClient": {
+        "type": "Direct",
+        "requested": "[5.1.1, )",
+        "resolved": "5.1.1",
+        "contentHash": "v5ZLmr8rFz8j5E1Kzs2hJXLwjwS7z0WDLD2hrhWY2LhYtE+FE1N4Nz5Y8a5rSJnw4dDYJbHqFwMNRAhMCQ5Q=="
+      },
+      "Microsoft.AspNetCore.Mvc": {
+        "type": "Direct", 
+        "requested": "[2.2.0, )",
+        "resolved": "2.2.0",
+        "contentHash": "W5u3rSlHwXzEgxgY/7V+L8Sm8VYS1M5d3WoY3W6HgLx/O7Rc+bpZSnMuqLdZnKWw0rKLnVF+4rTdGZu3wbKpA=="
+      },
+      "Moq": {
+        "type": "Direct",
+        "requested": "[4.20.69, )",
+        "resolved": "4.20.69",
+        "contentHash": "Qo27L8sZdMfp9UvL3YQ9mh5N3xyYi/YGXltC3ZiHrR0fUDZo8x8Q3YZc6VRTX1Q6dJMCKw9H1Y5Q/FcLSm1Kg=="
+      },
+      "NUnit": {
+        "type": "Direct",
+        "requested": "[3.14.0, )",
+        "resolved": "3.14.0",
+        "contentHash": "Wy5A1Fm5WsOOJ84/C82EDwxc0J5ynz1EKQgixRD9OFBpMg/iQFj1YWN3TLEZzM1T/nxrjDz+eE11LClmTEXLg=="
+      },
+      "NUnit3TestAdapter": {
+        "type": "Direct",
+        "requested": "[4.5.0, )",
+        "resolved": "4.5.0",
+        "contentHash": "B+gI4HFdZLhKWA2/JoBNp5A8H2s5Zq9LvJZL8TGFKs2wYvR+j6HGRj5kw8m5Q7LQjdY4Q5yOB1Q5H5BjCjVJA=="
+      },
+      "Newtonsoft.Json": {
+        "type": "Direct",
+        "requested": "[13.0.3, )",
+        "resolved": "13.0.3",
+        "contentHash": "Hf6bYY1KmfZHU2ROLYTa2qT0SbHF5m8/YK+X4+8d+M0+mHWB1Xa5+3DjPXVJ+/eFlwfYL2pUKLOlxYw8JJzDA=="
+      },
+      "Microsoft.Extensions.DependencyInjection": {
+        "type": "Direct",
+        "requested": "[8.0.0, )",
+        "resolved": "8.0.0",
+        "contentHash": "V8S3bsm2aG7K2vMl4Vq5/bIQ8wKYdKH3D2LyiJQ4H5+mvVOPTOUdcT4JeUhY1qFIvdg+lvbX3DQG2j7mPZ5Fw=="
+      }
+    }
+  }
+}
