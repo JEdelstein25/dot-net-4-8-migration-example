@@ -1,6 +1,6 @@
-# Legacy .NET Framework 4.8 Australian Tax Calculator
+# .NET 8 Australian Tax Calculator
 
-A comprehensive Australian tax calculation application built using legacy .NET Framework 4.8 technologies. This project serves as an example of enterprise-grade legacy .NET applications and migration patterns.
+A comprehensive Australian tax calculation application built using modern .NET 8 technologies. This project serves as an example of enterprise-grade .NET applications and demonstrates successful migration from .NET Framework 4.8.
 
 ## Overview
 
@@ -9,7 +9,7 @@ This application calculates Australian income tax, Medicare levy, and historical
 - **Historical tax calculations** with accurate progressive tax brackets
 - **Multiple API endpoints** for tax calculation, bracket retrieval, and health checks
 - **Enterprise architecture patterns** with dependency injection and repository pattern
-- **Legacy .NET Framework 4.8 stack** with ADO.NET data access
+- **Modern .NET 8 stack** with Microsoft.Data.SqlClient data access
 - **Self-hosted API server** for demonstration without IIS dependencies
 
 ## Solution Architecture
@@ -31,9 +31,9 @@ AustralianTaxCalculator/
 
 ### Prerequisites
 
-- .NET Framework 4.8 SDK
+- .NET 8 SDK
 - SQL Server LocalDB (optional, uses in-memory data by default)
-- Visual Studio 2019/2022 (recommended for full Web API)
+- Visual Studio 2022 or any compatible IDE
 
 ### Option 1: Standalone API Server (Recommended)
 
@@ -41,37 +41,37 @@ The standalone API server runs without IIS and demonstrates all core functionali
 
 1. **Build the standalone API:**
    ```cmd
-   msbuild TaxCalculator.StandaloneApi\TaxCalculator.StandaloneApi.csproj /p:Configuration=Debug
+   dotnet build TaxCalculator.StandaloneApi\TaxCalculator.StandaloneApi.csproj --configuration Release
    ```
 
 2. **Run the API server:**
    ```cmd
-   TaxCalculator.StandaloneApi\bin\Debug\TaxCalculator.StandaloneApi.exe
+   dotnet run --project TaxCalculator.StandaloneApi\TaxCalculator.StandaloneApi.csproj
    ```
    Server starts on `http://localhost:8080`
 
 3. **Test with the client:**
    ```cmd
-   msbuild ApiTestClient.csproj /p:Configuration=Debug
-   bin\Debug\ApiTestClient.exe
+   dotnet build ApiTestClient.csproj --configuration Release
+   dotnet run --project ApiTestClient.csproj
    ```
 
-### Option 2: Full Web API (Visual Studio Required)
+### Option 2: Full Web API
 
-1. **Restore NuGet packages:**
+1. **Restore dependencies:**
    ```cmd
-   nuget restore AustralianTaxCalculator.sln
+   dotnet restore AustralianTaxCalculator.sln
    ```
 
 2. **Build solution:**
    ```cmd
-   msbuild AustralianTaxCalculator.sln /p:Configuration=Debug
+   dotnet build AustralianTaxCalculator.sln --configuration Release
    ```
 
-3. **Run in Visual Studio:**
-   - Open `AustralianTaxCalculator.sln` in Visual Studio
-   - Set `TaxCalculator.Api` as startup project
-   - Press F5 to run with IIS Express
+3. **Run the API:**
+   ```cmd
+   dotnet run --project TaxCalculator.Api\TaxCalculator.Api.csproj
+   ```
 
 ### Database Setup (Optional)
 
@@ -90,22 +90,22 @@ The application works with in-memory data by default. To use SQL Server:
 ## Technology Stack
 
 ### Core Framework
-- **.NET Framework 4.8** - Legacy enterprise framework
-- **C# 7.3** - Language features compatible with .NET Framework 4.8
+- **.NET 8** - Modern cross-platform framework
+- **C# 12** - Latest language features
 
 ### Web API
-- **ASP.NET Web API 2** - RESTful API framework
-- **System.Web.Http** - HTTP request/response handling
-- **HttpListener** - Self-hosted API option
+- **ASP.NET Core Web API** - Modern RESTful API framework
+- **Microsoft.AspNetCore** - HTTP request/response handling
+- **HttpListener** - Self-hosted API option (legacy compatibility)
 
 ### Data Access
 - **ADO.NET** - Direct database connectivity (no ORM)
-- **System.Data.SqlClient** - SQL Server data provider
+- **Microsoft.Data.SqlClient** - Modern SQL Server data provider
 - **SQL Server LocalDB** - Local development database
 
 ### Dependency Injection
-- **Autofac 4.9.4** - IoC container for .NET Framework
-- **Autofac.WebApi2** - Web API integration
+- **Autofac 8.0** - IoC container for .NET
+- **Autofac.Extensions.DependencyInjection** - ASP.NET Core integration
 
 ### Caching
 - **StackExchange.Redis 1.2.6** - Redis client for distributed caching
@@ -118,18 +118,17 @@ The application works with in-memory data by default. To use SQL Server:
 
 ```xml
 <!-- Core Web API -->
-<PackageReference Include="Microsoft.AspNet.WebApi" Version="5.2.9" />
-<PackageReference Include="Microsoft.AspNet.WebApi.WebHost" Version="5.2.9" />
+<PackageReference Include="Microsoft.AspNetCore.App" />
 
 <!-- Dependency Injection -->
-<PackageReference Include="Autofac" Version="4.9.4" />
-<PackageReference Include="Autofac.WebApi2" Version="4.3.1" />
+<PackageReference Include="Autofac" Version="8.0.0" />
+<PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
 
 <!-- Data Access -->
-<PackageReference Include="System.Data.SqlClient" Version="4.8.5" />
+<PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
 
 <!-- Caching -->
-<PackageReference Include="StackExchange.Redis" Version="1.2.6" />
+<PackageReference Include="StackExchange.Redis" Version="2.8.16" />
 
 <!-- Testing -->
 <PackageReference Include="NUnit" Version="3.13.3" />
@@ -204,10 +203,10 @@ Run unit tests with 100% coverage:
 
 ```cmd
 # Build test project
-msbuild TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj
+dotnet build TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj
 
-# Run tests (requires NUnit Console Runner)
-nunit3-console TaxCalculator.Tests.Unit\bin\Debug\TaxCalculator.Tests.Unit.dll
+# Run tests
+dotnet test TaxCalculator.Tests.Unit\TaxCalculator.Tests.Unit.csproj --logger "console;verbosity=detailed"
 ```
 
 ## Enterprise Patterns Demonstrated
@@ -237,6 +236,3 @@ This project is provided as an educational example for legacy .NET Framework dev
 ## Contributing
 
 This is a demonstration project. For real-world tax calculations, please consult the Australian Taxation Office (ATO) for current rates and regulations.
-
-## Migration Status
-Projects have been migrated from .NET Framework 4.8 to .NET 8.
