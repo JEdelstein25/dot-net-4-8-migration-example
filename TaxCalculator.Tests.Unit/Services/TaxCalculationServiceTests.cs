@@ -17,14 +17,14 @@ namespace TaxCalculator.Tests.Unit.Services
         private ITaxCalculationService _taxCalculationService;
         private Mock<ITaxBracketRepository> _mockTaxBracketRepository;
         private Mock<ICacheService> _mockCacheService;
-        private Mock<ILogger> _mockLogger;
+        private Mock<IAppLogger> _mockLogger;
 
         [SetUp]
         public void Setup()
         {
             _mockTaxBracketRepository = new Mock<ITaxBracketRepository>();
             _mockCacheService = new Mock<ICacheService>();
-            _mockLogger = new Mock<ILogger>();
+            _mockLogger = new Mock<IAppLogger>();
 
             _taxCalculationService = new TaxCalculationService(
                 _mockTaxBracketRepository.Object,
