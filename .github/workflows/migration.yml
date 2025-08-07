@@ -9,6 +9,7 @@ on:
 
 permissions:
   contents: write  # required for GITHUB_TOKEN to push
+  pull-requests: write
 
 jobs:
   update:
@@ -20,7 +21,16 @@ jobs:
       - name: Make changes
         env:
           AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
-        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run upgrade-assistant upgrade --entry-point <path-to-sln-or-csproj> --non-interactive for all applicable sln and csproj files. Reference online documentation for more info on how to use the upgrade assistant."
+        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run the upgrade assistant. Example command -- upgrade-assistant upgrade TaxCalculator.Api\TaxCalculator.Api.csproj --operation Inplace --targetFramework net8.0 --non-interactive. Reference online documentation for more info on how to use the upgrade assistant."
+      - name: Drop any workflow file changes
+        if: always()
+        shell: pwsh
+        run: |
+          if (Test-Path ".github/workflows") {
+            git restore --staged ".github/workflows" 2>$null
+            git checkout -- ".github/workflows" 2>$null
+            git clean -fd ".github/workflows" 2>$null
+          }
       - name: Create pull request
         id: create_pr
         uses: peter-evans/create-pull-request@v6
