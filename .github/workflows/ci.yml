@@ -23,15 +23,16 @@ jobs:
       with:
         dotnet-version: ${{ matrix.dotnet-version }}
         cache: true
+        cache-dependency-path: packages.lock.json
         
     - name: Restore dependencies
-      run: dotnet restore
+      run: dotnet restore AustralianTaxCalculator.sln
       
     - name: Build solution
-      run: dotnet build --no-restore --configuration Release
+      run: dotnet build AustralianTaxCalculator.sln --no-restore --configuration Release
       
     - name: Run unit tests
-      run: dotnet test --no-build --configuration Release --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
+      run: dotnet test AustralianTaxCalculator.sln --no-build --configuration Release --logger trx --results-directory "TestResults-${{ matrix.dotnet-version }}"
       continue-on-error: true
       
     - name: Build individual projects (compatibility check)
