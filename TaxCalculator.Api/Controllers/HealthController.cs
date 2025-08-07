@@ -1,13 +1,13 @@
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaxCalculator.Api.Controllers
 {
     [RoutePrefix("api/health")]
-    public class HealthController : ApiController
+    public class HealthController : ControllerBase
     {
         [HttpGet]
         [Route("")]
-        public IHttpActionResult GetHealth()
+        public IActionResult GetHealth()
         {
             return Ok(new { status = "OK", timestamp = System.DateTime.UtcNow });
         }

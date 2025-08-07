@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using System.Web.Http;
 using TaxCalculator.Core.Models;
 using TaxCalculator.Services.Interfaces;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TaxCalculator.Api.Controllers
 {
     [RoutePrefix("api/tax")]
-    public class TaxController : ApiController
+    public class TaxController : ControllerBase
     {
         private readonly ITaxCalculationService _taxCalculationService;
         private readonly ILogger _logger;
@@ -21,7 +21,7 @@ namespace TaxCalculator.Api.Controllers
 
         [HttpPost]
         [Route("calculate")]
-        public async Task<IHttpActionResult> CalculateTax([FromBody] TaxCalculationRequest request)
+        public async Task<IActionResult> CalculateTax([FromBody] TaxCalculationRequest request)
         {
             try
             {
@@ -51,7 +51,7 @@ namespace TaxCalculator.Api.Controllers
 
         [HttpGet]
         [Route("brackets/{year}")]
-        public async Task<IHttpActionResult> GetTaxBrackets(string year)
+        public async Task<IActionResult> GetTaxBrackets(string year)
         {
             try
             {
@@ -70,7 +70,7 @@ namespace TaxCalculator.Api.Controllers
 
         [HttpGet]
         [Route("compare")]
-        public async Task<IHttpActionResult> CompareTax(decimal income, [FromUri] string[] years)
+        public async Task<IActionResult> CompareTax(decimal income, [FromQuery] string[] years)
         {
             try
             {
@@ -92,7 +92,7 @@ namespace TaxCalculator.Api.Controllers
 
         [HttpGet]
         [Route("history/{income}")]
-        public async Task<IHttpActionResult> GetTaxHistory(decimal income, int years = 10)
+        public async Task<IActionResult> GetTaxHistory(decimal income, int years = 10)
         {
             try
             {
