@@ -20,7 +20,7 @@ jobs:
       - name: Make changes
         env:
           AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
-        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run upgrade-assistant upgrade <path-to-sln-or-csproj> --non-interactive for all applicable sln and csproj files"
+        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run upgrade-assistant upgrade --entry-point <path-to-sln-or-csproj> --non-interactive for all applicable sln and csproj files. Reference online documentation for more info on how to use the upgrade assistant."
       - name: Create pull request
         id: create_pr
         uses: peter-evans/create-pull-request@v6
