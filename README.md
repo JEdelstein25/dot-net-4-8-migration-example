@@ -237,3 +237,6 @@ This project is provided as an educational example for legacy .NET Framework dev
 ## Contributing
 
 This is a demonstration project. For real-world tax calculations, please consult the Australian Taxation Office (ATO) for current rates and regulations.
+
+## Migration Status
+Projects have been migrated from .NET Framework 4.8 to .NET 8.

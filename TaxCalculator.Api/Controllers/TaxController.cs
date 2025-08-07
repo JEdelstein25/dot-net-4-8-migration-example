@@ -1,115 +1,108 @@
-using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using System.Web.Http;
+using Microsoft.AspNetCore.Mvc;
 using TaxCalculator.Core.Models;
 using TaxCalculator.Services.Interfaces;
 
-namespace TaxCalculator.Api.Controllers
+namespace TaxCalculator.Api.Controllers;
+
+[ApiController]
+[Route("api/tax")]
+public class TaxController : ControllerBase
 {
-    [RoutePrefix("api/tax")]
-    public class TaxController : ApiController
+    private readonly ITaxCalculationService _taxCalculationService;
+    private readonly ILogger _logger;
+
+    public TaxController(ITaxCalculationService taxCalculationService, ILogger logger)
     {
-        private readonly ITaxCalculationService _taxCalculationService;
-        private readonly ILogger _logger;
+        _taxCalculationService = taxCalculationService;
+        _logger = logger;
+    }
 
-        public TaxController(ITaxCalculationService taxCalculationService, ILogger logger)
+    [HttpPost("calculate")]
+    public async Task<IActionResult> CalculateTax([FromBody] TaxCalculationRequest request)
+    {
+        try
         {
-            _taxCalculationService = taxCalculationService;
-            _logger = logger;
+            if (request == null)
+                return BadRequest("Request cannot be null");
+
+            if (request.TaxableIncome < 0)
+                return BadRequest("Taxable income cannot be negative");
+
+            if (string.IsNullOrEmpty(request.FinancialYear))
+                return BadRequest("Financial year is required");
+
+            var result = await _taxCalculationService.CalculateTaxAsync(request);
+            return Ok(result);
         }
-
-        [HttpPost]
-        [Route("calculate")]
-        public async Task<IHttpActionResult> CalculateTax([FromBody] TaxCalculationRequest request)
+        catch (ArgumentException ex)
         {
-            try
-            {
-                if (request == null)
-                    return BadRequest("Request cannot be null");
-
-                if (request.TaxableIncome < 0)
-                    return BadRequest("Taxable income cannot be negative");
-
-                if (string.IsNullOrEmpty(request.FinancialYear))
-                    return BadRequest("Financial year is required");
-
-                var result = await _taxCalculationService.CalculateTaxAsync(request);
-                return Ok(result);
-            }
-            catch (ArgumentException ex)
-            {
-                _logger.LogWarning($"Invalid request: {ex.Message}");
-                return BadRequest(ex.Message);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error calculating tax: {ex.Message}", ex);
-                return InternalServerError(ex);
-            }
+            _logger.LogWarning($"Invalid request: {ex.Message}");
+            return BadRequest(ex.Message);
         }
-
-        [HttpGet]
-        [Route("brackets/{year}")]
-        public async Task<IHttpActionResult> GetTaxBrackets(string year)
+        catch (Exception ex)
         {
-            try
-            {
-                if (string.IsNullOrEmpty(year))
-                    return BadRequest("Year is required");
-
-                var brackets = await _taxCalculationService.GetTaxBracketsAsync(year);
-                return Ok(brackets);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error getting tax brackets: {ex.Message}", ex);
-                return InternalServerError(ex);
-            }
+            _logger.LogError($"Error calculating tax: {ex.Message}", ex);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
+    }
 
-        [HttpGet]
-        [Route("compare")]
-        public async Task<IHttpActionResult> CompareTax(decimal income, [FromUri] string[] years)
+    [HttpGet("brackets/{year}")]
+    public async Task<IActionResult> GetTaxBrackets(string year)
+    {
+        try
         {
-            try
-            {
-                if (income < 0)
-                    return BadRequest("Income cannot be negative");
+            if (string.IsNullOrEmpty(year))
+                return BadRequest("Year is required");
 
-                if (years == null || years.Length == 0)
-                    return BadRequest("Years are required");
-
-                var result = await _taxCalculationService.CompareTaxAcrossYearsAsync(income, new List<string>(years));
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error comparing tax: {ex.Message}", ex);
-                return InternalServerError(ex);
-            }
+            var brackets = await _taxCalculationService.GetTaxBracketsAsync(year);
+            return Ok(brackets);
         }
-
-        [HttpGet]
-        [Route("history/{income}")]
-        public async Task<IHttpActionResult> GetTaxHistory(decimal income, int years = 10)
+        catch (Exception ex)
         {
-            try
-            {
-                if (income < 0)
-                    return BadRequest("Income cannot be negative");
+            _logger.LogError($"Error getting tax brackets: {ex.Message}", ex);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
 
-                if (years <= 0 || years > 20)
-                    return BadRequest("Years must be between 1 and 20");
+    [HttpGet("compare")]
+    public async Task<IActionResult> CompareTax(decimal income, [FromQuery] string[] years)
+    {
+        try
+        {
+            if (income < 0)
+                return BadRequest("Income cannot be negative");
 
-                var result = await _taxCalculationService.GetTaxHistoryAsync(income, years);
-                return Ok(result);
-            }
-            catch (Exception ex)
-            {
-                _logger.LogError($"Error getting tax history: {ex.Message}", ex);
-                return InternalServerError(ex);
-            }
+            if (years == null || years.Length == 0)
+                return BadRequest("Years are required");
+
+            var result = await _taxCalculationService.CompareTaxAcrossYearsAsync(income, new List<string>(years));
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error comparing tax: {ex.Message}", ex);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
+        }
+    }
+
+    [HttpGet("history/{income}")]
+    public async Task<IActionResult> GetTaxHistory(decimal income, int years = 10)
+    {
+        try
+        {
+            if (income < 0)
+                return BadRequest("Income cannot be negative");
+
+            if (years <= 0 || years > 20)
+                return BadRequest("Years must be between 1 and 20");
+
+            var result = await _taxCalculationService.GetTaxHistoryAsync(income, years);
+            return Ok(result);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError($"Error getting tax history: {ex.Message}", ex);
+            return StatusCode(500, $"Internal server error: {ex.Message}");
         }
     }
 }
