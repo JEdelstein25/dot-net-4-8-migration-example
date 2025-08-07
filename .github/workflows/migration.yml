@@ -20,7 +20,7 @@ jobs:
       - name: Make changes
         env:
           AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
-        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using pnpm install upgrade-assistant and then run upgrade-assistant upgrade"
+        run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run upgrade-assistant upgrade <path-to-sln-or-csproj> --non-interactive for all applicable sln and csproj files"
       - name: Commit and push if changed
         shell: pwsh
         run: |
