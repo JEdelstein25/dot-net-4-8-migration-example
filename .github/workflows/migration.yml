@@ -21,16 +21,18 @@ jobs:
         env:
           AMP_API_KEY: ${{ secrets.AMP_API_KEY }}
         run: npx @sourcegraph/amp@latest --dangerously-allow-all -x "Migrate this from dotnet 4.8 to net8.0 using the dotnet upgrade assistant. Install it using dotnet tool install -g upgrade-assistant and then run upgrade-assistant upgrade <path-to-sln-or-csproj> --non-interactive for all applicable sln and csproj files"
-      - name: Commit and push if changed
-        shell: pwsh
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git diff --quiet
-          if ($LASTEXITCODE -ne 0) {
-            git add -A
-            git commit -m "Apply automated updates [skip ci]"
-            git push
-          } else {
-            Write-Host "No changes."
-          }
+      - name: Create pull request
+        id: create_pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          commit-message: "Apply automated .NET upgrade assistant changes"
+          branch: "amp/upgrade-assistant"
+          branch-suffix: timestamp
+          title: "Automated: .NET upgrade assistant changes"
+          body: |
+            This PR was created automatically by the migration workflow.
+            It contains changes produced by running Amp with the .NET Upgrade Assistant.
+          labels: automated, amp
+          delete-branch: true
+
