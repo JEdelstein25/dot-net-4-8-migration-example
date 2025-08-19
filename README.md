@@ -237,3 +237,7 @@ This project is provided as an educational example for legacy .NET Framework dev
 ## Contributing
 
 This is a demonstration project. For real-world tax calculations, please consult the Australian Taxation Office (ATO) for current rates and regulations.
+
+## Updates
+
+This project is continuously maintained to demonstrate best practices in legacy .NET Framework development.
